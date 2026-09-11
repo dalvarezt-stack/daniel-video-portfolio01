@@ -1,0 +1,2135 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Daniel Alvarez — Portafolio de editor de video y diseñador digital">
+  <title>Daniel Alvarez — Editor de Video y Diseñador Digital</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: #0a0a0a;
+      color: #f4f1eb;
+      font-family: Inter, Arial, sans-serif;
+    }
+
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    video {
+      font: inherit;
+    }
+
+    .wrap {
+      max-width: 1180px;
+      margin: auto;
+      padding: 0 28px;
+    }
+
+    .nav {
+      height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #242424;
+    }
+
+    .brand {
+      font-weight: 800;
+      letter-spacing: -.04em;
+    }
+
+    .brand span {
+      color: #a8ff35;
+    }
+
+    .links {
+      display: flex;
+      gap: 26px;
+      font: 12px 'DM Mono', monospace;
+      text-transform: uppercase;
+      color: #aaa;
+    }
+
+    .links a:hover {
+      color: #a8ff35;
+    }
+
+    .hero {
+      min-height: 680px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero:before {
+      content: '';
+      position: absolute;
+      width: 520px;
+      height: 520px;
+      border-radius: 50%;
+      background: #a8ff35;
+      filter: blur(150px);
+      opacity: .12;
+      right: -180px;
+      top: 60px;
+    }
+
+    .kicker {
+      font: 12px 'DM Mono', monospace;
+      color: #a8ff35;
+      text-transform: uppercase;
+      letter-spacing: .16em;
+    }
+
+    .hero h1 {
+      font-size: clamp(64px, 10vw, 142px);
+      line-height: .82;
+      letter-spacing: -.075em;
+      margin: 22px 0;
+      max-width: 1000px;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: #a8ff35;
+    }
+
+    .lead {
+      max-width: 650px;
+      color: #a9a9a9;
+      font-size: 18px;
+      line-height: 1.6;
+    }
+
+    .cta {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .btn {
+      padding: 14px 20px;
+      border: 1px solid #444;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .btn.primary {
+      background: #a8ff35;
+      color: #080808;
+      border-color: #a8ff35;
+    }
+
+    .section {
+      padding: 110px 0;
+      border-top: 1px solid #242424;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      margin-bottom: 38px;
+    }
+
+    .section h2 {
+      font-size: clamp(42px, 6vw, 76px);
+      letter-spacing: -.065em;
+      margin: 8px 0 0;
+    }
+
+    .count {
+      font: 12px 'DM Mono', monospace;
+      color: #777;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      grid-column: span 6;
+      min-height: 390px;
+      background: #121212;
+      border: 1px solid #252525;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card.wide {
+      grid-column: span 8;
+    }
+
+    .card.small {
+      grid-column: span 4;
+    }
+
+    .visual {
+      height: 270px;
+      background: linear-gradient(135deg, #171717, #272727);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .visual:after {
+      content: 'REPRODUCIR';
+      position: absolute;
+      border: 1px solid #555;
+      border-radius: 50%;
+      width: 64px;
+      height: 64px;
+      display: grid;
+      place-items: center;
+      font: 10px 'DM Mono', monospace;
+      color: #ddd;
+    }
+
+    .visual .word {
+      font-size: clamp(40px, 6vw, 90px);
+      font-weight: 800;
+      letter-spacing: -.07em;
+      opacity: .15;
+    }
+
+    .tag {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      z-index: 2;
+      font: 10px 'DM Mono', monospace;
+      padding: 7px 9px;
+      background: #0b0b0b;
+      color: #a8ff35;
+    }
+
+    .info {
+      padding: 20px;
+    }
+
+    .info h3 {
+      margin: 0 0 8px;
+      font-size: 20px;
+    }
+
+    .info p {
+      margin: 0;
+      color: #888;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* =========================
+       VIDEO CAROUSEL
+       ========================= */
+
+    .video-slider {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .video-viewport {
+      overflow: hidden;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .video-grid {
+      display: flex;
+      gap: 18px;
+      transition: transform .45s ease;
+      will-change: transform;
+    }
+
+    .video-card {
+      position: relative;
+      flex: 0 0 calc((100% - 36px) / 3);
+      width: calc((100% - 36px) / 3);
+      min-width: 0;
+      background: #121212;
+      border: 1px solid #252525;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    /* Contenido de Formato Largo: videos horizontales 16:9 */
+.long-form-slider .video-card > video {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: center;
+}
+
+.long-form-slider .video-card .play {
+  top: 50%;
+}
+
+    /*
+      Importante:
+      el video ahora tiene un ancho y alto definidos.
+      Esto evita que cada MP4 tome sus dimensiones originales
+      y desordene el carrusel.
+    */
+    .video-card > video {
+      display: block;
+      width: 100%;
+      height: 420px;
+      margin: 0;
+      object-fit: contain;
+      object-position: center;
+      background: #000;
+    }
+
+    .video-card .tag {
+      pointer-events: none;
+    }
+
+    .video-card .play {
+      position: absolute;
+      top: 185px;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 58px;
+      height: 58px;
+      border: 1px solid #fff;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: #0008;
+      font-size: 15px;
+      pointer-events: none;
+      transition: opacity .2s ease, transform .2s ease;
+    }
+
+    .video-card:hover .play {
+      transform: translate(-50%, -50%) scale(1.08);
+    }
+
+    .video-card .info {
+      min-height: 112px;
+      border-top: 1px solid #252525;
+    }
+
+    .video-arrow {
+      flex: 0 0 46px;
+      width: 46px;
+      height: 46px;
+      border: 1px solid #333;
+      border-radius: 50%;
+      background: #111;
+      color: #a8ff35;
+      font-size: 32px;
+      line-height: 1;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: all .2s ease;
+      z-index: 3;
+      padding: 0 0 4px;
+    }
+
+    .video-arrow:hover:not(:disabled) {
+      background: #a8ff35;
+      color: #080808;
+      border-color: #a8ff35;
+    }
+
+    .video-arrow:disabled {
+      opacity: .25;
+      cursor: default;
+    }
+
+    .video-help {
+      margin-top: 18px;
+      color: #666;
+      font: 11px 'DM Mono', monospace;
+    }
+
+    .video-help code {
+      color: #aaa;
+    }
+    /* =========================
+   IMAGE CAROUSEL
+   3D & PUBLICIDAD
+   ========================= */
+
+.image-slider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.image-viewport {
+  overflow: hidden;
+  flex: 1;
+  min-width: 0;
+}
+
+.image-grid {
+  display: flex;
+  gap: 18px;
+  transition: transform .45s ease;
+  will-change: transform;
+}
+
+.image-card {
+  position: relative;
+  flex: 0 0 calc((100% - 36px) / 3);
+  width: calc((100% - 36px) / 3);
+  min-width: 0;
+  background: #121212;
+  border: 1px solid #252525;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.image-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center;
+  background: #000;
+}
+
+.image-card .tag {
+  pointer-events: none;
+}
+
+.image-info {
+  min-height: 112px;
+  padding: 20px;
+  border-top: 1px solid #252525;
+}
+
+.image-info h3 {
+  margin: 0 0 8px;
+  font-size: 20px;
+}
+
+.image-info p {
+  margin: 0;
+  color: #888;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+
+/* IMAGE CAROUSEL ARROWS */
+
+.image-arrow {
+  flex: 0 0 46px;
+  width: 46px;
+  height: 46px;
+  border: 1px solid #333;
+  border-radius: 50%;
+  background: #111;
+  color: #a8ff35;
+  font-size: 32px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all .2s ease;
+  z-index: 3;
+  padding: 0 0 4px;
+}
+
+.image-arrow:hover:not(:disabled) {
+  background: #a8ff35;
+  color: #080808;
+  border-color: #a8ff35;
+}
+
+.image-arrow:disabled {
+  opacity: .25;
+  cursor: default;
+}
+
+
+/* =========================
+   IMAGE LIGHTBOX
+   ========================= */
+
+.image-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .92);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 25px;
+  z-index: 9999;
+}
+
+.image-modal.open {
+  display: flex;
+}
+
+.image-modal-inner {
+  position: relative;
+  width: min(92vw, 1200px);
+  max-height: 92vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-modal img {
+  display: block;
+  max-width: 92vw;
+  max-height: 88vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  background: #000;
+}
+
+.image-close {
+  position: absolute;
+  right: -12px;
+  top: -12px;
+  width: 38px;
+  height: 38px;
+  border: 1px solid #444;
+  border-radius: 50%;
+  background: #111;
+  color: #fff;
+  cursor: pointer;
+  font-size: 20px;
+  z-index: 2;
+}
+
+.image-close:hover {
+  background: #a8ff35;
+  color: #080808;
+  border-color: #a8ff35;
+}
+
+
+/* =========================
+   RESPONSIVE IMAGE CAROUSEL
+   ========================= */
+
+@media (max-width: 900px) {
+
+  .image-card {
+    flex: 0 0 calc((100% - 18px) / 2);
+    width: calc((100% - 18px) / 2);
+  }
+
+}
+
+@media (max-width: 760px) {
+
+  .image-slider {
+    gap: 7px;
+  }
+
+  .image-arrow {
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
+    font-size: 27px;
+  }
+
+  .image-card {
+    flex: 0 0 100%;
+    width: 100%;
+  }
+
+  .image-modal {
+    padding: 12px;
+  }
+
+}
+
+    /* =========================
+       VIDEO MODAL
+       ========================= */
+
+    .video-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .88);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 25px;
+      z-index: 9999;
+    }
+
+    .video-modal.open {
+      display: flex;
+    }
+
+    .video-modal-inner {
+      position: relative;
+      width: min(92vw, 520px);
+      max-height: 92vh;
+    }
+
+    .video-modal video {
+      display: block;
+      width: min(92vw, 520px);
+      max-height: 88vh;
+      background: #000;
+      object-fit: contain;
+    }
+
+    .video-close {
+      position: absolute;
+      right: -12px;
+      top: -12px;
+      width: 38px;
+      height: 38px;
+      border: 1px solid #444;
+      border-radius: 50%;
+      background: #111;
+      color: #fff;
+      cursor: pointer;
+      font-size: 20px;
+      z-index: 2;
+    }
+
+    .video-close:hover {
+      background: #a8ff35;
+      color: #080808;
+      border-color: #a8ff35;
+    }
+
+    .about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 70px;
+    }
+
+    .about p {
+      font-size: 20px;
+      line-height: 1.65;
+      color: #bbb;
+    }
+
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .skill {
+      border: 1px solid #333;
+      padding: 11px 13px;
+      font: 11px 'DM Mono', monospace;
+      color: #ccc;
+    }
+
+    .contact {
+      display: grid;
+      grid-template-columns: 1.3fr .7fr;
+      gap: 50px;
+    }
+
+    .contact h2 {
+      max-width: 800px;
+    }
+
+    .contact-copy {
+      color: #999;
+      line-height: 1.7;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      font: 13px 'DM Mono', monospace;
+    }
+
+    .contact-links a:hover {
+      color: #a8ff35;
+    }
+
+    .footer {
+      padding: 30px 0;
+      color: #666;
+      font: 10px 'DM Mono', monospace;
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid #242424;
+    }
+
+    /* =========================
+       RESPONSIVE
+       ========================= */
+
+    @media (max-width: 900px) {
+      .video-card {
+        flex: 0 0 calc((100% - 18px) / 2);
+        width: calc((100% - 18px) / 2);
+      }
+    }
+
+    @media (max-width: 760px) {
+      .links {
+        display: none;
+      }
+
+      .hero {
+        min-height: 590px;
+      }
+
+      .hero h1 {
+        font-size: 68px;
+      }
+
+      .lead {
+        font-size: 16px;
+      }
+
+      .section {
+        padding: 75px 0;
+      }
+
+      .section-head {
+        align-items: flex-start;
+        gap: 15px;
+        flex-direction: column;
+      }
+
+      .video-slider {
+        gap: 7px;
+      }
+
+      .video-arrow {
+        flex: 0 0 38px;
+        width: 38px;
+        height: 38px;
+        font-size: 27px;
+      }
+
+      .video-card {
+        flex: 0 0 100%;
+        width: 100%;
+      }
+
+      .video-card > video {
+        height: 500px;
+      }
+
+      .video-card .play {
+        top: 217px;
+      }
+
+      .card,
+      .card.wide,
+      .card.small {
+        grid-column: span 12;
+      }
+
+      .about,
+      .contact {
+        grid-template-columns: 1fr;
+        gap: 35px;
+      }
+
+      .footer {
+        gap: 15px;
+        flex-direction: column;
+      }
+
+      .video-modal {
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="wrap nav">
+    <a class="brand" href="#top">DANIEL<span>ALVAREZ</span></a>
+
+    <nav class="links">
+        <a href="#work">Trabajo</a>
+        <a href="#about">Sobre mí</a>
+        <a href="#contact">Contacto</a>
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <section class="wrap hero">
+      <div>
+        <div class="kicker">Editor de Video · Diseñador Digital · Colombia</div>
+
+        <h1>
+          EDITO.<br>
+          DISEÑO.<br>
+          <em>CREO.</em>
+        </h1>
+
+        <p class="lead">
+          Creo contenido visual para creadores, marcas y redes sociales,
+          combinando edición de video, diseño gráfico y tendencias digitales actuales.
+        </p>
+
+        <div class="cta">
+          <a class="btn primary" href="#work">Ver trabajos seleccionados ↘</a>
+          <a class="btn" href="#contact">Trabajemos juntos</a>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="wrap section" id="work">
+
+      <div class="section-head">
+        <div>
+          <div class="kicker">Trabajos seleccionados</div>
+          <h2>Proyectos</h2>
+        </div>
+
+        <div class="count">VIDEO / DISEÑO / PUBLICIDAD</div>
+      </div>
+
+
+      <div class="kicker" style="margin-bottom:18px">
+        Publicidad para Redes Sociales
+      </div>
+
+
+      <!-- VIDEO CAROUSEL -->
+
+      <div class="video-slider">
+
+        <button
+          class="video-arrow video-prev"
+          type="button"
+           aria-label="Videos anteriores"
+        >
+          ‹
+        </button>
+
+
+        <div class="video-viewport">
+
+          <div class="video-grid">
+
+            <!-- VIDEO 1 -->
+            <article
+              class="video-card"
+              data-video="videos/Socio Invisible 02.mp4"
+            >
+               <span class="tag">PUBLICIDAD</span>
+
+              <video
+                src="videos/Socio Invisible 02.mp4"
+                muted
+                loop
+                playsinline
+                preload="metadata"
+              ></video>
+
+              <div class="play">▶</div>
+
+              <div class="info">
+                <h3>Socio Invisible 02</h3>
+                 <p>Pieza publicitaria para redes sociales.</p>
+              </div>
+            </article>
+
+
+            <!-- VIDEO 2 -->
+            <article
+              class="video-card"
+              data-video="videos/Socio Invisible 03.mp4"
+            >
+               <span class="tag">PUBLICIDAD</span>
+
+              <video
+                src="videos/Socio Invisible 03.mp4"
+                muted
+                loop
+                playsinline
+                preload="metadata"
+              ></video>
+
+              <div class="play">▶</div>
+
+              <div class="info">
+                <h3>Socio Invisible 03</h3>
+                 <p>Pieza publicitaria para redes sociales.</p>
+              </div>
+            </article>
+
+
+            <!-- VIDEO 3 -->
+            <article
+              class="video-card"
+              data-video="videos/Socio Invisible 01.mp4"
+            >
+               <span class="tag">PUBLICIDAD</span>
+
+              <video
+                src="videos/Socio Invisible 01.mp4"
+                muted
+                loop
+                playsinline
+                preload="metadata"
+              ></video>
+
+              <div class="play">▶</div>
+
+              <div class="info">
+                <h3>Socio Invisible 01</h3>
+                 <p>Pieza publicitaria para redes sociales.</p>
+              </div>
+            </article>
+
+                <article class="video-card" data-video="videos/Ad 02 captacion.mp4">
+                 <span class="tag">PUBLICIDAD</span>
+                <video
+                  src="videos/Ad 02 captacion.mp4"
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                ></video>
+                <div class="play">▶</div>
+                <div class="info">
+                  <h3>Ad 02 captacion</h3>
+                   <p>Pieza publicitaria para redes sociales.</p>
+                </div>
+              </article>
+
+
+              <article class="video-card" data-video="videos/Anuncio es mañana.mp4">
+                 <span class="tag">PUBLICIDAD</span>
+                <video
+                  src="videos/Anuncio es mañana.mp4"
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                ></video>
+                <div class="play">▶</div>
+                <div class="info">
+                  <h3>Anuncio es mañana</h3>
+                   <p>Pieza publicitaria para redes sociales.</p>
+                </div>
+              </article>
+
+                      <article class="video-card" data-video="videos/INVERTIR EN CRIPTO.mp4">
+                       <span class="tag">PUBLICIDAD</span>
+                <video
+                  src="videos/INVERTIR EN CRIPTO.mp4"
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                ></video>
+                <div class="play">▶</div>
+                <div class="info">
+                  <h3>INVERTIR EN CRIPTO</h3>
+                  <p>Pieza publicitaria para redes sociales.</p>
+                </div>
+              </article>
+
+
+            <!--
+              PARA AGREGAR OTRO VIDEO:
+
+              Copia una tarjeta completa y cambia:
+              1. data-video
+              2. src
+              3. título
+              4. descripción
+
+              Ejemplo:
+
+              <article class="video-card" data-video="videos/AD 27.mp4">
+                <span class="tag">PUBLICIDAD</span>
+                <video
+                  src="videos/AD 27.mp4"
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                ></video>
+                <div class="play">▶</div>
+                <div class="info">
+                  <h3>AD 27</h3>
+                  <p>Pieza publicitaria para redes sociales.</p>
+                </div>
+              </article>
+            -->
+
+          </div>
+        </div>
+
+
+        <button
+          class="video-arrow video-next"
+          type="button"
+          aria-label="Next videos"
+        >
+          ›
+        </button>
+
+      </div>
+
+
+       <p class="video-help">
+         Para agregar un video: coloca el archivo <code>.mp4</code> dentro de
+         <code>videos/</code>, copia la tarjeta de plantilla y cambia el nombre
+         del archivo y el título.
+      </p>
+<!-- LONG-FORM CONTENT -->
+
+<div class="kicker" style="margin:70px 0 18px">
+   Contenido de Formato Largo
+</div>
+
+<div class="video-slider long-form-slider">
+
+  <button
+    class="video-arrow video-prev"
+    type="button"
+     aria-label="Videos anteriores de formato largo"
+  >
+    ‹
+  </button>
+
+  <div class="video-viewport">
+
+    <div class="video-grid">
+
+      <!-- VIDEO 1 -->
+      <article
+        class="video-card"
+        data-video="videos/Define tu nicho.mp4"
+      >
+
+         <span class="tag">YOUTUBE</span>
+
+        <video
+          src="videos/Define tu nicho.mp4"
+          muted
+          loop
+          playsinline
+          preload="metadata"
+        ></video>
+
+        <div class="play">▶</div>
+
+        <div class="info">
+          <h3>Define tu nicho</h3>
+           <p>Edición de videos de formato largo para YouTube.</p>
+        </div>
+
+      </article>
+
+
+      <!-- VIDEO 2 -->
+      <article
+        class="video-card"
+        data-video="videos/AD 01.mp4"
+      >
+
+         <span class="tag">YOUTUBE</span>
+
+        <video
+          src="videos/AD 01.mp4"
+          muted
+          loop
+          playsinline
+          preload="metadata"
+        ></video>
+
+        <div class="play">▶</div>
+
+        <div class="info">
+          <h3>Video Invitacion</h3>
+           <p>Edición de videos de formato largo para YouTube.</p>
+        </div>
+
+      </article>
+
+
+      <!-- VIDEO 3 -->
+      <article
+        class="video-card"
+        data-video="videos/Planificar el contenido.mp4"
+      >
+
+         <span class="tag">YOUTUBE</span>
+
+        <video
+          src="videos/Planificar el contenido.mp4"
+          muted
+          loop
+          playsinline
+          preload="metadata"
+        ></video>
+
+        <div class="play">▶</div>
+
+        <div class="info">
+          <h3>Planificar el contenido</h3>
+           <p>Edición de videos de formato largo para YouTube.</p>
+        </div>
+
+      </article>
+
+      <article
+        class="video-card"
+        data-video="videos/AD 25!.mp4"
+      >
+
+         <span class="tag">YOUTUBE</span>
+
+        <video
+          src="videos/AD 25!.mp4"
+          muted
+          loop
+          playsinline
+          preload="metadata"
+        ></video>
+
+        <div class="play">▶</div>
+
+        <div class="info">
+          <h3>AD Horizontal</h3>
+           <p>Edición de videos de formato largo para YouTube.</p>
+        </div>
+
+      </article>
+
+
+
+       <article
+        class="video-card"
+        data-video="videos/Video Luis.mp4"
+      >
+
+         <span class="tag">YOUTUBE</span>
+
+        <video
+          src="videos/Video Luis.mp4"
+          muted
+          loop
+          playsinline
+          preload="metadata"
+        ></video>
+
+        <div class="play">▶</div>
+
+        <div class="info">
+          <h3>Masterclass</h3>
+           <p>Edición de videos de formato largo para YouTube.</p>
+        </div>
+
+      </article>
+
+    </div>
+
+  </div>
+
+
+  <button
+    class="video-arrow video-next"
+    type="button"
+     aria-label="Siguientes videos de formato largo"
+  >
+    ›
+  </button>
+
+</div>
+
+
+<p class="video-help">
+  Proyectos de YouTube en formato largo · 16:9
+</p>
+
+
+<!-- =========================
+     VIDEO CON IA
+     ========================= -->
+
+<div class="kicker" style="margin:70px 0 18px">
+   Videos hechos con IA
+</div>
+
+<div class="video-slider ai-video-slider">
+
+  <button
+    class="video-arrow video-prev"
+    type="button"
+     aria-label="Videos anteriores hechos con IA">
+    ‹
+  </button>
+
+
+  <div class="video-viewport">
+
+    <div class="video-grid">
+
+
+      <!-- VIDEO CON IA 1 -->
+
+      <article
+        class="video-card"
+        data-video="videos/AI 01.mp4">
+
+           <span class="tag">VIDEO CON IA</span>
+
+        <video
+          src="videos/AI 01.mp4"
+          muted
+          loop
+          playsinline
+          preload="metadata">
+        </video>
+
+        <div class="play">▶</div>
+
+        <div class="info">
+           <h3>Video con IA 01</h3>
+          <p>
+             Contenido visual generado con IA y producción creativa de video.
+          </p>
+        </div>
+
+      </article>
+
+
+      <!-- VIDEO CON IA 2 -->
+
+      <article
+        class="video-card"
+        data-video="videos/AI 02.mp4">
+
+           <span class="tag">VIDEO CON IA</span>
+
+        <video
+          src="videos/AI 02.mp4"
+          muted
+          loop
+          playsinline
+          preload="metadata">
+        </video>
+
+        <div class="play">▶</div>
+
+        <div class="info">
+           <h3>Video con IA 02</h3>
+          <p>
+             Contenido visual generado con IA y producción creativa de video.
+          </p>
+        </div>
+
+      </article>
+
+
+      <!-- VIDEO CON IA 3 -->
+
+      <article
+        class="video-card"
+        data-video="videos/AI 03.mp4">
+
+           <span class="tag">VIDEO CON IA</span>
+
+        <video
+          src="videos/AI 03.mp4"
+          muted
+          loop
+          playsinline
+          preload="metadata">
+        </video>
+
+        <div class="play">▶</div>
+
+        <div class="info">
+           <h3>Video con IA 03</h3>
+          <p>
+             Contenido visual generado con IA y producción creativa de video.
+          </p>
+        </div>
+
+      </article>
+
+            <article
+        class="video-card"
+        data-video="videos/AI 05.mp4">
+
+         <span class="tag">VIDEO CON IA</span>
+
+        <video
+          src="videos/AI 05.mp4"
+          muted
+          loop
+          playsinline
+          preload="metadata">
+        </video>
+
+        <div class="play">▶</div>
+
+        <div class="info">
+           <h3>Video con IA 05</h3>
+          <p>
+             Contenido visual generado con IA y producción creativa de video.
+          </p>
+        </div>
+
+      </article>
+
+            <article
+        class="video-card"
+        data-video="videos/AI 04.mp4">
+
+         <span class="tag">VIDEO CON IA</span>
+
+        <video
+          src="videos/AI 04.mp4"
+          muted
+          loop
+          playsinline
+          preload="metadata">
+        </video>
+
+        <div class="play">▶</div>
+
+        <div class="info">
+           <h3>Video con IA 04</h3>
+          <p>
+             Contenido visual generado con IA y producción creativa de video.
+          </p>
+        </div>
+
+      </article>
+
+
+    </div>
+
+  </div>
+
+
+  <button
+    class="video-arrow video-next"
+    type="button"
+     aria-label="Siguientes videos hechos con IA">
+    ›
+  </button>
+
+</div>
+
+
+<p class="video-help">
+   Videos generados con IA · Producción creativa con IA
+</p>
+
+<!-- =========================
+     3D & PUBLICIDAD
+     ========================= -->
+
+<div class="kicker" style="margin:70px 0 18px">
+   Modelado 3D y Piezas Publicitarias
+</div>
+
+
+<div class="image-slider">
+
+
+  <button
+    class="image-arrow image-prev"
+    type="button"
+     aria-label="Imágenes anteriores">
+    ‹
+  </button>
+
+
+  <div class="image-viewport">
+
+    <div class="image-grid">
+
+
+      <!-- IMAGE 1 -->
+
+      <article class="image-card">
+
+        <span class="tag">3D</span>
+
+        <img
+          src="images/IMAGEN 4.png"
+           alt="Proyecto de modelado 3D 01">
+
+        <div class="image-info">
+           <h3>Página de aterrizaje</h3>
+          <p>
+             Modelado 3D y visualización de productos.
+          </p>
+        </div>
+
+      </article>
+
+
+      <!-- IMAGE 2 -->
+
+      <article class="image-card">
+
+        <span class="tag">3D</span>
+
+        <img
+          src="images/IMAGEN 5.png"
+           alt="Proyecto de modelado 3D 02">
+
+        <div class="image-info">
+           <h3>Página de aterrizaje</h3>
+          <p>
+             Modelado 3D y visualización de productos.
+          </p>
+        </div>
+
+      </article>
+
+
+      <!-- IMAGE 3 -->
+
+      <article class="image-card">
+
+           <span class="tag">PUBLICIDAD</span>
+
+        <img
+          src="images/IMAGEN 1.png"
+           alt="Pieza publicitaria 01">
+
+        <div class="image-info">
+           <h3>Modelo 3D</h3>
+          <p>
+             Diseño visual 3D y publicitario.
+          </p>
+        </div>
+
+      </article>
+
+
+      <!-- IMAGE 4 -->
+
+      <article class="image-card">
+
+           <span class="tag">PUBLICIDAD</span>
+
+        <img
+          src="images/IMAGEN 6.png"
+           alt="Pieza publicitaria 02">
+
+        <div class="image-info">
+           <h3>Modelo 3D</h3>
+          <p>
+             Diseño visual 3D y publicitario.
+          </p>
+        </div>
+
+      </article>
+
+
+      
+
+    </div>
+
+  </div>
+
+
+  <button
+    class="image-arrow image-next"
+    type="button"
+     aria-label="Siguientes imágenes">
+    ›
+  </button>
+
+
+</div>
+
+
+<p class="video-help">
+   Modelado 3D · Visualización de productos · Diseño publicitario
+</p>
+
+    </section>
+
+
+    <!-- ABOUT -->
+
+    <section class="wrap section" id="about">
+
+      <div class="kicker">Sobre mí</div>
+
+      <div class="about">
+
+        <div>
+          <h2>Visuales con propósito.</h2>
+
+          <p>
+            Soy Diseñador Gráfico Digital y Editor de Video, enfocado en contenido
+            para redes sociales, publicidad y comunicación visual. Mi objetivo es
+            simple: hacer que las ideas se vean mejor, se sientan actuales y conecten
+            con la audiencia adecuada.
+          </p>
+        </div>
+
+
+        <div>
+          <div class="kicker">Habilidades principales</div>
+
+          <div class="skills" style="margin-top:20px">
+
+            <span class="skill">EDICIÓN DE VIDEO</span>
+            <span class="skill">DISEÑO DE ANIMACIÓN</span>
+            <span class="skill">DISEÑO GRÁFICO</span>
+            <span class="skill">REDES SOCIALES</span>
+            <span class="skill">PUBLICIDAD</span>
+            <span class="skill">IDENTIDAD VISUAL</span>
+            <span class="skill">ADOBE CREATIVE CLOUD</span>
+            <span class="skill">CAPCUT</span>
+            <span class="skill">HERRAMIENTAS CREATIVAS CON IA</span>
+
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- CONTACT -->
+
+    <section class="wrap section" id="contact">
+
+      <div class="contact">
+
+        <div>
+          <div class="kicker">Disponible para trabajo remoto</div>
+
+          <h2>
+            ¿Tienes un proyecto?<br>
+            <span style="color:#a8ff35">Creemos juntos.</span>
+          </h2>
+
+          <p class="contact-copy">
+            Estoy disponible para oportunidades de trabajo remoto, proyectos
+            freelance y colaboraciones en edición de video, diseño gráfico y
+            contenido para redes sociales.
+          </p>
+        </div>
+
+
+        <div class="contact-links">
+          <a href="mailto:d.alvarezt@unitecnica.net">d.alvarezt@unitecnica.net ↗</a>
+
+          <a
+            href="https://wa.me/573218949614"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            WHATSAPP ↗
+          </a>
+
+          <a
+            href="https://www.linkedin.com/in/daniel-alvarez-taborda-581873387in/daniel-alvarez-taborda-581873387"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            LINKEDIN ↗
+          </a>
+
+          <a
+            href="https://www.instagram.com/dani.al_baro/dani.al_baro/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            INSTAGRAM ↗
+          </a>
+
+          <a
+            href="https://drive.google.com/drive/folders/1p5wE81XUruh8MWkoe5_GbpBWfcJTYHgR"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            PORTAFOLIO ↗
+          </a>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <footer class="wrap footer">
+    <span>© 2026 DANIEL ALVAREZ</span>
+    <span>EDITOR DE VIDEO / DISEÑADOR DIGITAL</span>
+  </footer>
+
+
+  <script>
+    /* =========================================
+       VIDEO MODAL
+       ========================================= */
+
+    const modal = document.createElement('div');
+
+    modal.className = 'video-modal';
+
+    modal.innerHTML = `
+      <div class="video-modal-inner">
+        <button
+          class="video-close"
+          type="button"
+          aria-label="Cerrar video"
+        >
+          ×
+        </button>
+
+        <video
+          controls
+          playsinline
+        ></video>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+
+    function setupVideoCard(card) {
+
+      const video = card.querySelector('video');
+      const source = card.dataset.video;
+
+      if (!source || !video) return;
+
+      /*
+        La fuente se establece aquí también para que el sistema
+        de reproducción del carrusel use siempre data-video.
+      */
+      video.src = source;
+      video.load();
+
+
+      /* Reproducir al pasar el mouse */
+      card.addEventListener('mouseenter', () => {
+        video.play().catch(() => {});
+      });
+
+
+      /* Detener al salir */
+      card.addEventListener('mouseleave', () => {
+        video.pause();
+
+        /*
+          Solo reiniciamos si el video ya tiene datos suficientes.
+          Esto evita errores en algunos navegadores.
+        */
+        try {
+          video.currentTime = 0;
+        } catch (error) {}
+      });
+
+
+      /* Abrir video grande al hacer click */
+      card.addEventListener('click', () => {
+
+        const modalVideo = modal.querySelector('video');
+
+        modalVideo.pause();
+        modalVideo.src = source;
+        modalVideo.load();
+
+        modal.classList.add('open');
+        document.body.classList.add('modal-open');
+
+        modalVideo.play().catch(() => {});
+      });
+    }
+
+
+    /* Inicializar todas las tarjetas */
+    document
+      .querySelectorAll('.video-card')
+      .forEach(setupVideoCard);
+
+
+    /* =========================================
+       VIDEO CAROUSEL
+       ========================================= */
+
+   document.querySelectorAll('.video-slider').forEach((slider) => {
+
+  const viewport = slider.querySelector('.video-viewport');
+  const track = slider.querySelector('.video-grid');
+  const cards = [...slider.querySelectorAll('.video-card')];
+
+  const prevBtn = slider.querySelector('.video-prev');
+  const nextBtn = slider.querySelector('.video-next');
+
+  let index = 0;
+
+
+  function getSliderData() {
+
+    if (!cards.length) {
+      return {
+        cardWidth: 0,
+        gap: 0,
+        visibleCards: 1,
+        maxIndex: 0
+      };
+    }
+
+    const cardWidth =
+      cards[0].getBoundingClientRect().width;
+
+    const gap =
+      parseFloat(getComputedStyle(track).gap) || 0;
+
+    const visibleCards = Math.max(
+      1,
+      Math.floor(
+        (viewport.clientWidth + gap) /
+        (cardWidth + gap)
+      )
+    );
+
+    const maxIndex = Math.max(
+      0,
+      cards.length - visibleCards
+    );
+
+    return {
+      cardWidth,
+      gap,
+      visibleCards,
+      maxIndex
+    };
+  }
+
+
+  function updateSlider() {
+
+    if (!cards.length) return;
+
+    const {
+      cardWidth,
+      gap,
+      maxIndex
+    } = getSliderData();
+
+    index = Math.min(index, maxIndex);
+
+    const offset =
+      index * (cardWidth + gap);
+
+    track.style.transform =
+      `translate3d(-${offset}px, 0, 0)`;
+
+    prevBtn.disabled =
+      index === 0;
+
+    nextBtn.disabled =
+      index >= maxIndex;
+  }
+
+
+  prevBtn.addEventListener('click', () => {
+
+    if (index > 0) {
+      index--;
+      updateSlider();
+    }
+
+  });
+
+
+  nextBtn.addEventListener('click', () => {
+
+    const { maxIndex } =
+      getSliderData();
+
+    if (index < maxIndex) {
+      index++;
+      updateSlider();
+    }
+
+  });
+
+
+  window.addEventListener(
+    'resize',
+    updateSlider
+  );
+
+
+  window.requestAnimationFrame(() => {
+    updateSlider();
+  });
+
+});
+
+/* =========================================
+   IMAGE CAROUSEL
+   ========================================= */
+
+document.querySelectorAll('.image-slider').forEach((slider) => {
+
+  const viewport =
+    slider.querySelector('.image-viewport');
+
+  const track =
+    slider.querySelector('.image-grid');
+
+  const cards =
+    [...slider.querySelectorAll('.image-card')];
+
+  const prevBtn =
+    slider.querySelector('.image-prev');
+
+  const nextBtn =
+    slider.querySelector('.image-next');
+
+  let index = 0;
+
+
+  function getImageSliderData() {
+
+    if (!cards.length) {
+
+      return {
+        cardWidth: 0,
+        gap: 0,
+        visibleCards: 1,
+        maxIndex: 0
+      };
+
+    }
+
+
+    const cardWidth =
+      cards[0].getBoundingClientRect().width;
+
+
+    const gap =
+      parseFloat(
+        getComputedStyle(track).gap
+      ) || 0;
+
+
+    const visibleCards = Math.max(
+      1,
+      Math.floor(
+        (viewport.clientWidth + gap) /
+        (cardWidth + gap)
+      )
+    );
+
+
+    const maxIndex = Math.max(
+      0,
+      cards.length - visibleCards
+    );
+
+
+    return {
+      cardWidth,
+      gap,
+      visibleCards,
+      maxIndex
+    };
+
+  }
+
+
+  function updateImageSlider() {
+
+    if (!cards.length) return;
+
+
+    const {
+      cardWidth,
+      gap,
+      maxIndex
+    } = getImageSliderData();
+
+
+    index = Math.min(
+      index,
+      maxIndex
+    );
+
+
+    const offset =
+      index * (cardWidth + gap);
+
+
+    track.style.transform =
+      `translate3d(-${offset}px, 0, 0)`;
+
+
+    prevBtn.disabled =
+      index === 0;
+
+
+    nextBtn.disabled =
+      index >= maxIndex;
+
+  }
+
+
+  prevBtn.addEventListener(
+    'click',
+    () => {
+
+      if (index > 0) {
+
+        index--;
+
+        updateImageSlider();
+
+      }
+
+    }
+  );
+
+
+  nextBtn.addEventListener(
+    'click',
+    () => {
+
+      const {
+        maxIndex
+      } = getImageSliderData();
+
+
+      if (index < maxIndex) {
+
+        index++;
+
+        updateImageSlider();
+
+      }
+
+    }
+  );
+
+
+  window.addEventListener(
+    'resize',
+    updateImageSlider
+  );
+
+
+  window.requestAnimationFrame(
+    updateImageSlider
+  );
+
+});
+
+/* =========================================
+   IMAGE LIGHTBOX
+   ========================================= */
+
+const imageModal =
+  document.createElement('div');
+
+imageModal.className =
+  'image-modal';
+
+
+imageModal.innerHTML = `
+
+  <div class="image-modal-inner">
+
+    <button
+      class="image-close"
+      type="button"
+      aria-label="Cerrar imagen">
+      ×
+    </button>
+
+    <img
+      src=""
+      alt="">
+      
+  </div>
+
+`;
+
+
+document.body.appendChild(
+  imageModal
+);
+
+
+const imageModalImg =
+  imageModal.querySelector('img');
+
+
+document
+  .querySelectorAll('.image-card')
+  .forEach((card) => {
+
+    const image =
+      card.querySelector('img');
+
+
+    card.addEventListener(
+      'click',
+      () => {
+
+        imageModalImg.src =
+          image.src;
+
+        imageModalImg.alt =
+          image.alt;
+
+        imageModal.classList.add(
+          'open'
+        );
+
+        document.body.classList.add(
+          'modal-open'
+        );
+
+      }
+    );
+
+  });
+
+
+function closeImageModal() {
+
+  imageModal.classList.remove(
+    'open'
+  );
+
+  document.body.classList.remove(
+    'modal-open'
+  );
+
+  imageModalImg.removeAttribute(
+    'src'
+  );
+
+}
+
+
+imageModal.addEventListener(
+  'click',
+  (event) => {
+
+    if (
+      event.target === imageModal ||
+      event.target.classList.contains(
+        'image-close'
+      )
+    ) {
+
+      closeImageModal();
+
+    }
+
+  }
+);
+    /* =========================================
+       MODAL CONTROLS
+       ========================================= */
+
+    function closeVideoModal() {
+
+      const modalVideo =
+        modal.querySelector('video');
+
+      modalVideo.pause();
+      modalVideo.removeAttribute('src');
+      modalVideo.load();
+
+      modal.classList.remove('open');
+      document.body.classList.remove('modal-open');
+    }
+
+
+    /* Click fuera del video o en X */
+    modal.addEventListener('click', (event) => {
+
+      if (
+        event.target === modal ||
+        event.target.classList.contains('video-close')
+      ) {
+        closeVideoModal();
+      }
+
+    });
+
+
+    /* Escape para cerrar */
+    document.addEventListener('keydown', (event) => {
+
+      if (
+        event.key === 'Escape' &&
+        modal.classList.contains('open')
+      ) {
+        closeVideoModal();
+      }
+
+    });
+
+
+    /* =========================================
+       INITIALIZE
+       ========================================= */
+
+    /*
+      Esperamos a que el navegador haya calculado
+      los tamaños antes de posicionar el carrusel.
+    */
+    window.requestAnimationFrame(() => {
+      updateVideoSlider();
+    });
+
+  </script>
+
+</body>
+</html>
